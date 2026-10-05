@@ -18,7 +18,7 @@ withDefaults(
 <template>
   <NuxtLink
     :to="link"
-    active-class="bg-tint text-black-1 dark:text-black-1"
+    active-class="bg-brand text-on-brand dark:text-on-brand"
     class="group flex gap-2 rounded-xl px-4 py-2"
   >
     <NuxtIcon v-if="icon" :name="icon" class="text-xl" />

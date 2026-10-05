@@ -1,0 +1,17 @@
+# pnpm 11 ignores these in .npmrc. Without shamefullyHoist there is no root
+# node_modules/vue, so Vite can't dedupe and libs get their own Vue copy.
+shamefullyHoist: true
+strictPeerDependencies: false
+autoInstallPeers: true
+
+# Force a single Vue runtime. Mixed copies break reactivity across libs
+# (e.g. headlessui Menu never opening, useAuth0() failing in plugins).
+overrides:
+  vue: 3.4.23
+
+allowBuilds:
+  cypress: true
+  electron: true
+  esbuild: true
+  maplibre-gl: false
+  vue-demi: true

@@ -1,14 +1,12 @@
-import { useAuth0 } from "@auth0/auth0-vue";
-
 export interface IUserData {
   os: string;
   personId: number | null;
   age: number | null;
 }
 
-export default defineNuxtPlugin(() => {
+export default defineNuxtPlugin((nuxtApp) => {
   const runtimeConfig = useRuntimeConfig();
-  const { user } = useAuth0();
+  const { user } = nuxtApp.vueApp.config.globalProperties.$auth0;
 
   const userData: IUserData = {
     os: runtimeConfig.public.systemName,

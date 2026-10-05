@@ -13,6 +13,10 @@ const config: Partial<Config> = {
       ...designColors,
     },
     extend: {
+      colors: {
+        brand: "var(--bmm-brand)",
+        "on-brand": "var(--bmm-on-brand)",
+      },
       gridTemplateColumns: {
         tracklist: "min-content auto auto auto min-content",
         tilesWide: "repeat(auto-fill, minmax(350px, 1fr))",

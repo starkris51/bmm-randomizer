@@ -1,6 +1,25 @@
 @import "design-tokens/colors.generated.css";
 @import "icons/playing.animation.css";
 
+/* Randomizer theme overrides (take precedence over the generated tokens) */
+:root {
+  --bmm-brand: #7c3aed;
+  --bmm-on-brand: #ffffff;
+  --bmm-background-1: #eceef1;
+  --bmm-background-2: #e1e4e8;
+  --bmm-background-3: #f5f6f7;
+  --bmm-background-toolbar: #eceef1e5;
+}
+
+html.dark {
+  --bmm-brand: #8b5cf6;
+  --bmm-on-brand: #ffffff;
+  --bmm-background-1: #0f1215;
+  --bmm-background-2: #181c20;
+  --bmm-background-3: #22272c;
+  --bmm-background-toolbar: #0f1215e5;
+}
+
 html,
 body,
 #__nuxt {

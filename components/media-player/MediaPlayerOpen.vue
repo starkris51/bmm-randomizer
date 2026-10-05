@@ -234,7 +234,7 @@ const trackCover = computed(() => coverForTrack(currentTrack.value));
         >
           <div
             :class="{
-              'bg-tint text-black-1 hover:bg-tint': isCurrentTrack(i),
+              'bg-brand hover:bg-brand text-black-1': isCurrentTrack(i),
               'cursor-pointer': disableDraggable,
               'cursor-row-resize': !disableDraggable,
             }"

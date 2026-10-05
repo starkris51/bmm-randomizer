@@ -1,7 +1,5 @@
 <script lang="ts" setup>
 import { version } from "~/package.json";
-import type { NuxtIconName } from "#build/nuxt-icons";
-import type { RoutesNamedLocations } from "@typed-router";
 
 const { data: collections } = usePrivatePlaylists();
 const runtimeConfig = useRuntimeConfig();
@@ -12,38 +10,6 @@ onMounted(() => {
   isMounted.value = true;
 });
 const hamburgerOpen = ref<boolean>(false);
-
-const { data: currentUser } = await useCurrentUser();
-
-const { t } = useI18n();
-
-type Tool = {
-  id: string;
-  name: string;
-  icon: NuxtIconName;
-  link: RoutesNamedLocations;
-  show: boolean;
-};
-const tools = computed<Tool[]>(() => {
-  // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
-  const items = [
-    {
-      id: "lyrics",
-      name: t("nav.lyrics"),
-      icon: "icon.lyrics",
-      link: { name: "lyrics" },
-      show: isLyricsManager(currentUser.value),
-    },
-    {
-      id: "homescreen-manager",
-      name: "Page Editor",
-      icon: "icon.dashboard",
-      link: { name: "page-editor" },
-      show: isHomeScreenManager(currentUser.value),
-    },
-  ].filter((tool) => tool.show) as Tool[];
-  return items;
-});
 </script>
 
 <template>
@@ -90,41 +56,9 @@ const tools = computed<Tool[]>(() => {
       <div class="flex-grow overflow-y-auto">
         <SidebarGroup>
           <SidebarItem
-            :title="$t('nav.home')"
+            title="Randomizer"
             :link="{ name: 'index' }"
-            icon="nav.home"
-          />
-          <SidebarItem
-            :title="$t('nav.browse')"
-            :link="{ name: 'browse' }"
-            icon="nav.browse"
-          />
-          <SidebarItem
-            :title="$t('nav.search')"
-            :link="{ name: 'search-term' }"
-            icon="nav.search"
-          />
-          <template v-if="tools.length === 1">
-            <SidebarItem
-              v-for="tool in tools"
-              :key="tool.id"
-              :link="tool.link"
-              :title="$t(tool.name)"
-              :icon="tool.icon"
-            />
-          </template>
-        </SidebarGroup>
-
-        <SidebarGroup
-          v-if="tools.length > 1"
-          :title="$t('sidebar.tools.title')"
-        >
-          <SidebarItem
-            v-for="tool in tools"
-            :key="tool.id"
-            :title="tool.name"
-            :link="tool.link"
-            :icon="tool.icon"
+            icon="icon.shuffle"
           />
         </SidebarGroup>
 
@@ -144,9 +78,7 @@ const tools = computed<Tool[]>(() => {
                 : 'icon.category.playlist'
             "
           />
-          <SidebarAddPlaylist></SidebarAddPlaylist>
         </SidebarGroup>
-        <SidebarDesktopPromo v-if="!isElectron" />
       </div>
     </div>
   </aside>

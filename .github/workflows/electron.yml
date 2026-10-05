@@ -42,16 +42,16 @@ jobs:
         env:
           NUXT_PUBLIC_APPLICATION_INSIGHTS: ${{ vars.NUXT_PUBLIC_APPLICATION_INSIGHTS }}
 
-      - name: Package the Electron app for Mac
-        run: pnpm package:electron
-        if: matrix.os == 'macos-latest'
-        env:
-          CSC_LINK: developer-id.p12
-          CSC_KEY_PASSWORD: ${{secrets.BCCM_APPLE_DEVELOPER_ID_PASSWORD}}
-          APPLE_APP_SPECIFIC_PASSWORD: ${{secrets.BCCM_APPLE_APP_SPECIFIC_PASSWORD}}
-          APPLE_ID: ${{secrets.BCCM_APPLE_ID_USERNAME}}
-          APPLE_ID_PASSWORD: ${{secrets.BCCM_APPLE_APP_SPECIFIC_PASSWORD}}
-          APPLE_TEAM_ID: KJ6LCYQ3A8
+      # - name: Package the Electron app for Mac note: i need the mac creditaitons for dis
+      #   run: pnpm package:electron
+      #   if: matrix.os == 'macos-latest'
+      #   env:
+      #     CSC_LINK: developer-id.p12
+      #     CSC_KEY_PASSWORD: ${{secrets.BCCM_APPLE_DEVELOPER_ID_PASSWORD}}
+      #     APPLE_APP_SPECIFIC_PASSWORD: ${{secrets.BCCM_APPLE_APP_SPECIFIC_PASSWORD}}
+      #     APPLE_ID: ${{secrets.BCCM_APPLE_ID_USERNAME}}
+      #     APPLE_ID_PASSWORD: ${{secrets.BCCM_APPLE_APP_SPECIFIC_PASSWORD}}
+      #     APPLE_TEAM_ID: KJ6LCYQ3A8
 
       - name: Package the Electron app for Linux
         run: pnpm package:electron

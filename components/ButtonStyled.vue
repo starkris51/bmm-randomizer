@@ -27,7 +27,7 @@ const className = cva(
   {
     variants: {
       intent: {
-        primary: "bg-background-4 text-on-color-1",
+        primary: "bg-brand text-on-brand",
         secondary: "bg-background-2 text-label-1",
         tertiary: "text-label-1 border border-label-separator",
       },
