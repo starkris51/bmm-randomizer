@@ -39,8 +39,28 @@ jobs:
           node-version: 22
           cache: pnpm
 
+      # Electron and electron-builder download binaries from GitHub releases,
+      # which occasionally returns 5xx. Cache them and retry the install.
+      - name: Cache Electron binaries
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cache/electron
+            ~/.cache/electron-builder
+            ~/AppData/Local/electron/Cache
+            ~/AppData/Local/electron-builder/Cache
+          key: ${{ runner.os }}-electron-${{ hashFiles('pnpm-lock.yaml') }}
+          restore-keys: ${{ runner.os }}-electron-
+
       - name: Install dependencies
-        run: pnpm install
+        shell: bash
+        run: |
+          for i in 1 2 3; do
+            pnpm install && exit 0
+            echo "pnpm install failed (attempt $i), retrying in 15s..."
+            sleep 15
+          done
+          exit 1
 
       - name: Build for production
         run: pnpm build:electron
