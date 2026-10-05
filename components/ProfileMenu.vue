@@ -82,31 +82,6 @@ const { data: user } = useCurrentUser();
       <template #items>
         <DropdownMenuGroup>
           <DropdownMenuItem
-            :title="$t('profile.autoplay')"
-            @click="
-              (e: MouseEvent) => {
-                e.preventDefault();
-                profileStore.autoplay = !profileStore.autoplay;
-              }
-            "
-          >
-            <template #right>
-              <Switch
-                v-model="profileStore.autoplay"
-                :class="profileStore.autoplay ? 'bg-tint ' : 'bg-background-2 '"
-                class="relative inline-flex h-6 w-10 shrink-0 cursor-pointer rounded-full p-1 transition-colors duration-200 ease-in-out focus:outline-none"
-              >
-                <span
-                  aria-hidden="true"
-                  :class="
-                    profileStore.autoplay ? 'translate-x-full' : 'translate-x-0'
-                  "
-                  class="pointer-events-none inline-block aspect-square w-4 transform rounded-full bg-white-1 shadow-lg ring-1 ring-black-separator transition duration-200 ease-in-out"
-                />
-              </Switch>
-            </template>
-          </DropdownMenuItem>
-          <DropdownMenuItem
             :title="$t('profile.theme')"
             :secondary-title="getColorModeName(colorMode.preference)"
             @click="showThemeDialog = true"
@@ -134,11 +109,6 @@ const { data: user } = useCurrentUser();
           />
         </DropdownMenuGroup>
         <DropdownMenuGroup>
-          <DropdownMenuItem
-            v-if="!isElectron"
-            :title="$t('download.download')"
-            :to="{ name: 'download' }"
-          />
           <DropdownMenuItem
             :title="$t('profile.uservoice')"
             href="https://uservoice.bcc.no/?tags=bmm"

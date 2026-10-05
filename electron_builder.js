@@ -1,10 +1,16 @@
 // @ts-check
+// Windows signing only runs when the Azure Key Vault credentials are present.
+// Without them the installer is unsigned (SmartScreen will warn on first run).
+const canSignWindows = !!process.env.WINDOWS_CLIENT_ID;
+
 /**
  * @type {import('electron-builder').Configuration}
  */
 const config = {
-  appId: "media.bcc.bmm-web",
-  productName: "BMM",
+  appId: "com.starkris51.bmm-randomizer",
+  productName: "BMM Randomizer",
+  copyright:
+    "Copyright © 2026 Kristoffer Bekkevold. Based on BMM, © 2024 BCC Media STI.",
   files: [
     { from: ".output/public", to: "dist-electron", filter: ["**/*"] },
     { from: "electron/icons", to: "dist-electron/icons" },
@@ -14,6 +20,12 @@ const config = {
   ],
   directories: {
     output: "dist-app",
+  },
+  publish: {
+    provider: "github",
+    owner: "starkris51",
+    repo: "bmm-randomizer",
+    releaseType: "draft",
   },
   protocols: [{ name: "Custom BMM", schemes: ["bmm"] }],
   mac: {
@@ -36,10 +48,12 @@ const config = {
   },
   win: {
     target: ["nsis", "zip"],
-    signingHashAlgorithms: ["sha256"],
-    sign: "./electron_sign_exe.js",
-    publisherName: "BCC MEDIA STI",
-    legalTrademarks: "(C) 2024 BCC MEDIA STI",
+    ...(canSignWindows && {
+      signingHashAlgorithms: ["sha256"],
+      sign: "./electron_sign_exe.js",
+      // electron-updater verifies updates against this name, so only set it when signing
+      publisherName: "BCC MEDIA STI",
+    }),
   },
   linux: {
     category: "Audio;Player",
@@ -47,17 +61,14 @@ const config = {
       Keywords:
         "audio;bcc;bmm;brunstad;christian;church;edification;faith;media;music;sermon",
       SingleMainWindow: true,
-      StartupWMClass: "bmm-web",
+      StartupWMClass: "bmm-randomizer",
       MimeType: "x-scheme-handler/bmm",
     },
     target: ["AppImage", "deb"],
   },
   deb: {
-    packageName: "bmm-web",
-    // For questions specific to the Debian package, users can e-mail me.
-    // We don't have an author e-mail in the package.json, otherwise that one would be used.
-    // For Debian packages such information is mandatory
-    maintainer: "gijsbertth+bmm-web.deb-ACvYJHQajj4ArT1JgO4osw@gmail.com",
+    packageName: "bmm-randomizer",
+    // Maintainer is taken from the author in package.json
     depends: ["libnotify4", "libxtst6", "libnss3"],
     recommends: [
       // Most XDG supporting desktop distros will use a trigger installed by this package to automatically register the URI scheme handling.

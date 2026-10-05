@@ -88,6 +88,7 @@ function matchesFilter(track: TrackModel, f: TrackFilter): boolean {
 }
 
 const contentTypeOptions = Object.values(TrackSubtype);
+const maxTracks = 50;
 
 function toggleContentType(type: TrackSubtype) {
   const i = filter.contentTypes.indexOf(type);
@@ -132,6 +133,10 @@ async function randomCatalogTracks(): Promise<TrackModel[]> {
   }
   if (filterKey.value === key) trackCount.value = count;
   if (count === 0) return [];
+
+  if (size.value > maxTracks) {
+    size.value = maxTracks;
+  }
 
   const total = count;
   const results = await Promise.all(
@@ -242,6 +247,7 @@ async function saveAsPlaylist() {
       class="flex w-full max-w-xl flex-col gap-4 rounded-2xl bg-background-2 p-6"
       @submit.prevent="playRandom"
     >
+      <label class="type-title-1 text-center text-label-1">Control Panel</label>
       <fieldset class="flex flex-col gap-2">
         <legend class="type-subtitle-2 mb-3 text-label-4">Content type</legend>
         <div class="flex flex-wrap gap-2">

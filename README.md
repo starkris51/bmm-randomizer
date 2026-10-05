@@ -78,10 +78,15 @@ If the standalone TypeScript plugin doesn't feel fast enough to you, Volar has a
 
 ## Creating a new electron build
 
-Please see the [Electron documentation on the GitHub Release Workflow](https://www.electron.build/configuration/publish.html#recommended-github-releases-workflow).
+1. Bump `version` in `package.json` (e.g. `1.0.5`).
+2. Commit, then tag and push: `git tag v1.0.5 && git push origin main --tags`.
+3. The [Build electron app](.github/workflows/electron.yml) workflow builds Windows and Linux and uploads them to a draft release `v1.0.5`.
+4. Publish the draft on GitHub. The in-app auto-updater only sees published releases.
 
-- The new release in Github should be called the same as version in package.json (e.g. 0.0.5)
-- The tag of the release should be 'v0.0.5' and 'Create new tag: v0.0.5 on publish' needs to be set
-- Save Release as draft
+Builds are unsigned, so Windows SmartScreen shows a warning on first install ("More info" → "Run anyway").
 
-That way every new build will update the binaries of the release above. Once the version is ready, it will create the correct tag in git.
+## Credits & license
+
+BMM Randomizer is a modified fork of [bcc-code/bmm-web](https://github.com/bcc-code/bmm-web) by BCC Media STI, maintained by [Kristoffer Bekkevold](https://github.com/starkris51). It is not affiliated with or endorsed by BCC Media.
+
+Licensed under the [GNU AGPL v3](LICENSE), like the original. Modifications © 2026 Kristoffer Bekkevold.

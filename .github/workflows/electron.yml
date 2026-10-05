@@ -3,6 +3,13 @@ name: Build electron app
 on:
   workflow_dispatch:
   workflow_call:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  # Needed so GITHUB_TOKEN can create the release and upload assets
+  contents: write
 
 jobs:
   build-electron-app:
@@ -10,77 +17,45 @@ jobs:
     env:
       # GitHub token, automatically provided to the action
       # (No need to define this secret in the repo settings)
-      GH_TOKEN: ${{ secrets.github_token }}
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
     strategy:
       fail-fast: false
       matrix:
-        os: [macos-latest, ubuntu-latest, windows-latest]
+        os: [ubuntu-latest, windows-latest]
 
     steps:
       - name: Check out Git repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
-      - name: Install Node.js and PNPM
+      - name: Install PNPM
         uses: pnpm/action-setup@v4
         with:
           version: 9
 
+      - name: Install Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+
       - name: Install dependencies
         run: pnpm install
-
-      - name: Download certificate file
-        run: |
-          echo $APPLE_DEVELOPER_ID_FILE | base64 --decode >> developer-id.p12
-        if: matrix.os == 'macos-latest'
-        shell: bash
-        env:
-          APPLE_DEVELOPER_ID_FILE: ${{secrets.BCCM_APPLE_DEVELOPER_ID_FILE}}
 
       - name: Build for production
         run: pnpm build:electron
         env:
           NUXT_PUBLIC_APPLICATION_INSIGHTS: ${{ vars.NUXT_PUBLIC_APPLICATION_INSIGHTS }}
 
-      # - name: Package the Electron app for Mac note: i need the mac creditaitons for dis
-      #   run: pnpm package:electron
-      #   if: matrix.os == 'macos-latest'
-      #   env:
-      #     CSC_LINK: developer-id.p12
-      #     CSC_KEY_PASSWORD: ${{secrets.BCCM_APPLE_DEVELOPER_ID_PASSWORD}}
-      #     APPLE_APP_SPECIFIC_PASSWORD: ${{secrets.BCCM_APPLE_APP_SPECIFIC_PASSWORD}}
-      #     APPLE_ID: ${{secrets.BCCM_APPLE_ID_USERNAME}}
-      #     APPLE_ID_PASSWORD: ${{secrets.BCCM_APPLE_APP_SPECIFIC_PASSWORD}}
-      #     APPLE_TEAM_ID: KJ6LCYQ3A8
-
-      - name: Package the Electron app for Linux
-        run: pnpm package:electron
-        if: matrix.os == 'ubuntu-latest'
-
-      - name: Install AzureSignTool
-        run: dotnet tool install -g AzureSignTool
-        if: matrix.os == 'windows-latest'
-        shell: bash
-
-      - name: Package the Electron app for Windows
-        run: pnpm package:electron
-        if: matrix.os == 'windows-latest'
-        env:
-          WINDOWS_DIRECTORY_ID: ${{ secrets.BCCM_WINDOWS_DIRECTORY_ID }}
-          WINDOWS_CLIENT_ID: ${{ secrets.BCCM_WINDOWS_CLIENT_ID }}
-          WINDOWS_CLIENT_SECRET: ${{ secrets.BCCM_WINDOWS_CLIENT_SECRET }}
+      # Publishes to a draft GitHub release when triggered by a tag, otherwise only builds
+      - name: Package the Electron app
+        run: pnpm package:electron --publish ${{ startsWith(github.ref, 'refs/tags/v') && 'always' || 'never' }}
 
       - name: Archive production artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: app-${{matrix.os}}
+          name: app-${{ matrix.os }}
           path: |
             dist-app/BMM*
-
-      - name: Archive Debian packages
-        uses: actions/upload-artifact@v4
-        if: matrix.os == 'ubuntu-latest'
-        with:
-          name: app-debian
-          path: |
-            dist-app/bmm-web*.deb
+            dist-app/*.deb
+          if-no-files-found: error

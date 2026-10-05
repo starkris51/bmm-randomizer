@@ -5,12 +5,10 @@ export const useProfileStore = defineStore(
   () => {
     const autoplay = ref(false);
     const uiLanguage = ref<LanguageEnum>("en");
-    const hasDisabledDownloadPromo = ref(false);
 
     return {
       autoplay,
       uiLanguage,
-      hasDisabledDownloadPromo,
     };
   },
   {
