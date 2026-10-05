@@ -1,7 +1,8 @@
-# bmm-web
+# BMM Randomizer
 
-This repository will be used for a new website for https://bmm.bcc.media using [Nuxt 3](https://nuxt.com/docs/getting-started/introduction).
-In a later stage we want to use the same code to create a desktop app.
+A Modded version for the desktop version of BMM that gives you a singular page that allows you to randomize content, so you dont need to look up what you want to listen.
+
+# From the fork:
 
 This repository uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
 
