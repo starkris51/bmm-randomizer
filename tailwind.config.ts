@@ -16,6 +16,8 @@ const config: Partial<Config> = {
       colors: {
         brand: "var(--bmm-brand)",
         "on-brand": "var(--bmm-on-brand)",
+        "5": "var(--bmm-background-5)",
+        background: "var(--bmm-background-5)",
       },
       gridTemplateColumns: {
         tracklist: "min-content auto auto auto min-content",

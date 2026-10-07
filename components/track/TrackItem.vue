@@ -108,7 +108,7 @@ const selectedTrack: Ref<TrackModel | null> = ref(null);
 
     <div
       v-if="isPlaying"
-      class="absolute -inset-x-4 -inset-y-0 rounded-xl bg-tint"
+      class="absolute -inset-x-4 -inset-y-0 rounded-xl bg-brand"
     ></div>
 
     <!-- eslint-disable vue/no-v-html -->

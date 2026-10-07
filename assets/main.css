@@ -9,6 +9,7 @@
   --bmm-background-2: #e1e4e8;
   --bmm-background-3: #f5f6f7;
   --bmm-background-toolbar: #eceef1e5;
+  --bmm-background-5: #0f1215e5;
 }
 
 html.dark {
@@ -18,6 +19,7 @@ html.dark {
   --bmm-background-2: #181c20;
   --bmm-background-3: #22272c;
   --bmm-background-toolbar: #0f1215e5;
+  --bmm-background-5: #0f1215e5;
 }
 
 html,
